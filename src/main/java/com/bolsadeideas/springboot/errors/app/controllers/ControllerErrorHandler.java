@@ -1,5 +1,6 @@
 package com.bolsadeideas.springboot.errors.app.controllers;
 
+import com.bolsadeideas.springboot.errors.app.errors.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,6 +24,15 @@ public class ControllerErrorHandler {
     @ExceptionHandler(NumberFormatException.class)
     public String numberFormatError(Exception e, Model model) {
         model.addAttribute("errorMsg", "¡¡¡Number format error!!!");
+        model.addAttribute("message", e.getMessage());
+        model.addAttribute("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        model.addAttribute("timestamp", new Date());
+        return "error/number-format";
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public String userNotFoundError(Exception e, Model model) {
+        model.addAttribute("errorMsg", "¡¡¡This user doesn't exist in our systems!!!");
         model.addAttribute("message", e.getMessage());
         model.addAttribute("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         model.addAttribute("timestamp", new Date());
